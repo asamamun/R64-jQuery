@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <a href="javascript:void(0);" class="btn btn-primary" id="LoginBtn">Login</a> |
+        <a href="javascript:void(0);" class="btn btn-info" id="RegisterBtn">Registration</a>
+    </div>
+    <div id="loginContainer">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Login</h5>
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="loginusername" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="loginpassword" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerContainer">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Registration</h5>
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            //hide login and register container when page loads
+          $("#loginContainer , #registerContainer").hide();
+          //show loginContainer on login button click
+          $("#LoginBtn").click(function(){
+            $("#loginContainer").show(200);
+            $("#registerContainer").hide(200);
+          });
+          //show registerContainer on register button click
+          $("#RegisterBtn").click(function(){
+            $("#registerContainer").show(200);
+            $("#loginContainer").hide(200);
+          });
+
+
+        });
+    </script>
+</body>
+</html>

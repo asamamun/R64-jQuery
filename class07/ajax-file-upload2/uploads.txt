@@ -1,0 +1,6 @@
+/project-root/
+├── index.html
+├── upload.php
+├── get_files.php
+├── delete_file.php
+└── uploads/ (this directory should be created automatically)

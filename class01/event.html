@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 600px;
+            padding: 20px;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h3 {
+            color: #0066cc;
+            margin-top: 20px;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 id="heading">jQuery Syntax Reference</h1>
+        
+        <h3>Basic Syntax</h3>
+        <pre><code>
+// jQuery selector
+$(selector).action()
+
+// Document ready
+$(document).ready(function() { /* code */ });
+// or shorthand
+$(function() { /* code */ });
+        </code></pre>
+
+        <h3>Common Selectors</h3>
+        <pre><code>
+// Element, ID, Class
+$('p')              // All &lt;p&gt; elements
+$('#id')           // Element with id="id"
+$('.class')        // Elements with class="class"
+
+// Multiple selectors
+$('p, #id, .class')
+
+// Attribute selectors
+$('[href]')        // Elements with href attribute
+$('[href="value"]') // Elements with href="value"
+        </code></pre>
+
+        <h3>Events</h3>
+        <pre><code>
+// Common events
+.click()           // Click event
+.dblclick()        // Double-click
+.mouseenter()      // Mouse enter
+.mouseleave()      // Mouse leave
+.on('event', fn)   // Attach event handler
+.off('event')      // Remove event handler
+
+// Example
+$('#btn').click(function() { alert('Clicked!'); });
+        </code></pre>
+
+        <h3>DOM Manipulation</h3>
+        <pre><code>
+// Get/Set content
+.text()            // Get text content
+.text('new')       // Set text content
+.html()            // Get HTML content
+.html('new')       // Set HTML content
+.val()             // Get input value
+.val('new')        // Set input value
+
+// Attributes
+.attr('href')      // Get href attribute
+.attr('href', 'url') // Set href attribute
+.removeAttr('href') // Remove attribute
+
+// Add elements
+.append('content') // Append content
+.prepend('content') // Prepend content
+.after('content')  // Insert after
+.before('content') // Insert before
+        </code></pre>
+
+        <h3>Effects</h3>
+        <pre><code>
+// Show/Hide
+.hide()            // Hide element
+.show()            // Show element
+.toggle()          // Toggle show/hide
+
+// Fading
+.fadeIn()          // Fade in
+.fadeOut()         // Fade out
+.fadeToggle()      // Toggle fade
+
+// Sliding
+.slideDown()       // Slide down
+.slideUp()         // Slide up
+.slideToggle()     // Toggle slide
+
+// Animation
+.animate({styles}, speed, callback)
+        </code></pre>
+
+        <h3>AJAX</h3>
+        <pre><code>
+// Basic AJAX
+$.ajax({
+    url: 'file.php',
+    method: 'POST',
+    data: { key: 'value' },
+    success: function(response) { /* handle success */ },
+    error: function() { /* handle error */ }
+});
+
+// Shorthand methods
+$.get('file.php', function(data) { /* handle data */ });
+$.post('file.php', { key: 'value' }, function(data) { /* handle data */ });
+        </code></pre>
+    </div>
+
+
+
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+           $("h1").css("color", "red");
+           $("h1").css("backgroundColor", "yellow");
+           $("h1").css("borderRadius", "10px");
+            //click event
+
+            $("h3").hover(function(){
+                $(this).css("color", "green");                
+            });
+            $("h3").mouseout(function(){
+                $(this).css("color", "blue");
+            });
+
+            $("h3 + pre").css("display", "none");
+
+            $("h3").click(function(){
+                // $(this).next("pre").toggle(300);
+                // $(this).next("pre").slideToggle(300);
+                $(this).next("pre").fadeToggle(300);
+                // $(this).next("pre").slideToggle(600);
+            });
+
+            $("#heading").click(function(){
+                $(this).css("backgroundColor", "green");
+                $(this).css("color", "white");
+                $(this).html("জেকুয়েরি সিন্টাক্স রিফারেন্স");
+            });
+
+        });
+    </script>
+</body>
+</html>

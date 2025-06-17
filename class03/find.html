@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form id="add-form">
+        <div class="form-group">
+          <label for="item">Item</label>
+          <input
+            type="text"
+            class="form-control"
+            id="item"
+            placeholder="Item"
+          />
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            type="number"
+            class="form-control"
+            id="price"
+            placeholder="Price"
+          />
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input
+            type="number"
+            class="form-control"
+            id="quantity"
+            placeholder="Quantity"
+          />
+        </div>
+        <div class="form-group">
+          <label for="total">Total</label>
+          <input
+            type="number"
+            class="form-control"
+            id="total"
+            placeholder="Total"
+            readonly
+          />
+        </div>
+        <button type="button" id="add-btn" class="btn btn-primary">Add</button>
+      </form>
+      <div class="d-flex justify-content-between">
+        <h3>Cart</h3>
+        <button type="button" id="clear-btn" class="btn btn-danger">
+          Clear
+        </button>
+      </div>
+      
+      <table class="table table-striped table-hover" id="cart">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Apple</td>
+            <td class="price">2.50</td>
+            <td><input type="number" class="qty" value="1" min="1" /></td>
+            <td class="item-total">$2.50</td>
+            <td><button class="del-btn">Delete</button></td>
+          </tr>
+          <tr>
+            <td>Banana</td>
+            <td class="price">1.20</td>
+            <td><input type="number" class="qty" value="2" min="1" /></td>
+            <td class="item-total">$2.40</td>
+            <td><button class="del-btn">Delete</button></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Total</td>
+            <td class="grandtotal">0</td>
+            <td><button class="del-btn">Delete</button></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#clear-btn").on("click", function () {
+           $("#cart tbody").empty(); 
+          calcGrandTotal();
+        })
+        /*         function calcGrandTotal(){
+            var total = 0;
+            $(".item-total").each(function(){
+                total += parseFloat($(this).text().replace("$", "")).toFixed(2);
+                alert(total);
+            });
+            $(".grandtotal").text("$" + total);
+        } */
+        function calcGrandTotal() {
+          let total = 0;
+
+          $(".item-total").each(function () {
+            // Extract numeric value from text like "$2.50"
+            const text = $(this).text();
+            const numStr = text.replace(/[^0-9.\-]/g, ""); // Keep only digits and dot
+            const amount = parseFloat(numStr);
+
+            if (!isNaN(amount)) {
+              total += amount;
+            }
+          });
+
+          $(".grandtotal").text("$" + total.toFixed(2));
+        }
+
+        $("#cart").on("change", ".qty", function () {
+          var price = $(this).closest("tr").find(".price").text();
+          var qty = $(this).val();
+          var total = (price * qty).toFixed(2);
+          $(this)
+            .closest("tr")
+            .find(".item-total")
+            .text("$" + total);
+          calcGrandTotal();
+        });
+
+        //add btn
+        $("#add-btn").click(function () {
+          var item = $("#item").val();
+          var price = $("#price").val();
+          var quantity = $("#quantity").val();
+          var total = (price * quantity).toFixed(2);
+
+          $("#cart tbody").append(`
+                <tr>
+                    <td>${item}</td>
+                    <td class="price">${price}</td>
+                    <td><input type="number" class="qty" value="${quantity}" min="1"></td>
+                    <td class="item-total">${total}</td>
+                    <td><button class="del-btn">Delete</button></td>
+                </tr>
+            `);
+
+          calcGrandTotal();
+
+          $("#item").val("");
+          $("#price").val("0");
+          $("#quantity").val("1");
+        }); //add btn end
+
+        //delete btn
+        $("#cart").on("click", ".del-btn", function () {
+          $(this).closest("tr").remove();
+          calcGrandTotal();
+        });
+      });
+    </script>
+  </body>
+</html>

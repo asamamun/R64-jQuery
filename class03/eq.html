@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h3>eq starts from 0</h3>
+        <ul>
+            <li>item 1</li>
+            <li>item 2</li>
+            <li>item 3</li>
+            <li>item 4</li>
+            <li>item 5</li>
+        </ul>
+        <hr>
+        <table>
+            <tr>
+                <td>item 1</td>
+                <td>item 2</td>
+                <td>item 3</td>
+                <td>item 4</td>
+                <td>item 5</td>
+                <td>item 6</td>
+            </tr>
+            <tr>
+                <td>item 1</td>
+                <td>item 2</td>
+                <td>item 3</td>
+                <td>item 4</td>
+                <td>item 5</td>
+                <td>item 6</td>
+            </tr>
+            <tr>
+                <td>item 1</td>
+                <td>item 2</td>
+                <td>item 3</td>
+                <td>item 4</td>
+                <td>item 5</td>
+                <td>item 6</td>
+            </tr>
+            <tr>
+                <td>item 1</td>
+                <td>item 2</td>
+                <td>item 3</td>
+                <td>item 4</td>
+                <td>item 5</td>
+                <td>item 6</td>
+            </tr>
+            <tr>
+                <td>item 1</td>
+                <td>item 2</td>
+                <td>item 3</td>
+                <td>item 4</td>
+                <td>item 5</td>
+                <td>item 6</td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          $("ul li").eq(0).css({color: "green", backgroundColor: "red"});
+          $("ul li").eq(2).css({color: "red", backgroundColor: "yellow"});
+
+          $("table").css({width: "100%", border: "1px solid red"});
+          $("table tr").eq(0).css({color: "green", backgroundColor: "red"});
+          
+        });
+    </script>
+</body>
+</html>

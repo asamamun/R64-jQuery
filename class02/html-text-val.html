@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+<h1>text and html difference</h1>
+        <h1 id="contentHTML">Lorem ipsum, <mark> dolor sit amet consectetur adipisicing elit.</mark> Officia explicabo, cupiditate eum suscipit dolore perferendis alias vero, nesciunt assumenda porro optio, saepe in facere sit molestias a quaerat facilis iusto.</h1>
+        <button id="copytext">Copy text</button>
+        <button id="copyhtml">Copy html</button>
+        <hr>
+        <p id="result"></p>
+        <hr>
+        <h1>val() in form</h1>
+        <form action="">
+            <label for="username">Username: <input type="text" id="username"></label> <br>
+            <label for="password">Password: <input type="password" id="password"></label> <br>
+            <button type="button" id="login">Login</button>
+            <button type="button" id="clear">Clear</button>
+        </form>
+        <textarea name="" id="details"></textarea>
+        <div id="output"></div>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            //copy text
+          $("#copytext").click(function(){
+            let text = $("h1#contentHTML").text();//takes only text
+            console.log(text);
+            $("#result").html(text);
+          });
+          //copy html
+          $("#copyhtml").click(function(){
+            let html = $("h1#contentHTML").html();//takse text and tags, everything
+            console.log(html);
+            $("#result").html(html);
+          });
+          //val() in form
+          $("#login").click(function(){
+            let username = $("#username").val();//get
+            let password = $("#password").val();//get
+            console.log(username);
+            console.log(password);
+          });
+          //clear form
+          $("#clear").click(function(){
+            // $("#username").val("you can set form value");
+            // $("#password").val("12345");
+            $("#username").val("");//set
+            $("#password").val("");//set
+          });
+
+          $("#details").keyup(function(){
+            $("#output").html($(this).val());
+            //console.log(text);
+          });
+        });
+    </script>
+</body>
+</html>

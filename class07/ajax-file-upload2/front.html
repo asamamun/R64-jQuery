@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop File Upload</title>
+    <script src="../../assets/js/jquery-3.7.1.min.js"></script>
+    <style>
+        #drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            padding: 25px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        #drop-area.highlight {
+            border-color: #4CAF50;
+            background-color: #f8f8f8;
+        }
+        .file-list {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .progress {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            width: 0%;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-download {
+            background-color: #2196F3;
+        }
+        .btn-delete {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div id="drop-area">
+        <h3>Drag & Drop Files Here</h3>
+        <p>(Only images and PDFs allowed)</p>
+        <input type="file" id="fileElem" multiple accept="image/*,.pdf" style="display:none">
+        <button id="browseBtn">Select Files</button>
+    </div>
+
+    <div class="file-list">
+        <h3>Uploaded Files</h3>
+        <table id="fileTable">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="fileList">
+                <!-- Files will be listed here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        let dropArea = document.getElementById('drop-area');
+        let fileElem = document.getElementById('fileElem');
+        let browseBtn = document.getElementById('browseBtn');
+        
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        // Handle file selection via button
+        browseBtn.addEventListener('click', function(e) {
+            fileElem.click();
+        });
+        
+        fileElem.addEventListener('change', function(e) {
+            handleFiles(this.files);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        function highlight() {
+            dropArea.classList.add('highlight');
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('highlight');
+        }
+        
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            handleFiles(files);
+        }
+        
+        function handleFiles(files) {
+            files = [...files];
+            files.forEach(uploadFile);
+        }
+        
+        function uploadFile(file) {
+            // Check file type
+            let validTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                alert('Only images (JPEG, PNG, GIF) and PDF files are allowed!');
+                return;
+            }
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB limit!');
+                return;
+            }
+            
+            let url = 'uploads.php';
+            let formData = new FormData();
+            formData.append('file', file);
+            
+            // Create a unique ID for this upload
+            let fileId = 'file-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            
+            // Add row to table
+            let row = document.createElement('tr');
+            row.id = fileId;
+            row.innerHTML = `
+                <td>${file.name}</td>
+                <td>${file.type}</td>
+                <td>${formatFileSize(file.size)}</td>
+                <td>
+                    <div class="progress-bar">
+                        <div class="progress" id="${fileId}-progress">0%</div>
+                    </div>
+                    <span id="${fileId}-status">Uploading...</span>
+                </td>
+            `;
+            document.getElementById('fileList').appendChild(row);
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function() {
+                    let xhr = new XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            let percentComplete = Math.round((e.loaded / e.total) * 100);
+                            $(`#${fileId}-progress`).width(percentComplete + '%');
+                            $(`#${fileId}-progress`).text(percentComplete + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    console.log(response);
+                    try {
+                        let data = response;
+                        if (data.success) {
+                            $(`#${fileId}-status`).text('Uploaded');
+                            $(`#${fileId}`).html(`
+                                <td>${data.file_name}</td>
+                                <td>${data.file_type}</td>
+                                <td>${formatFileSize(data.file_size)}</td>
+                                <td>
+                                    <a href="uploads/${data.file_name}" class="btn btn-download" download>Download</a>
+                                    <button class="btn btn-delete" onclick="deleteFile('${data.file_name}', '${fileId}')">Delete</button>
+                                </td>
+                            `);
+                        } else {
+                            $(`#${fileId}-status`).text('Error: ' + data.message);
+                        }
+                    } catch (e) {
+                        $(`#${fileId}-status`).text('Error processing response');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $(`#${fileId}-status`).text('Upload failed: ' + error);
+                }
+            });
+        }
+        
+        // Load existing files on page load
+        loadExistingFiles();
+        
+        function loadExistingFiles() {
+            $.ajax({
+                url: 'get_files.php',
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    try {
+                        let files = response;
+                        if (files.length > 0) {
+                            files.forEach(function(file) {
+                                let fileId = 'file-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                                let row = document.createElement('tr');
+                                row.id = fileId;
+                                row.innerHTML = `
+                                    <td>${file.name}</td>
+                                    <td>${file.type}</td>
+                                    <td>${formatFileSize(file.size)}</td>
+                                    <td>
+                                        <a href="uploads/${file.name}" class="btn btn-download" download>Download</a>
+                                        <button class="btn btn-delete" onclick="deleteFile('${file.name}', '${fileId}')">Delete</button>
+                                    </td>
+                                `;
+                                document.getElementById('fileList').appendChild(row);
+                            });
+                        }
+                    } catch (e) {
+                        console.error('Error loading existing files:', e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading existing files:', error);
+                }
+            });
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    });
+    
+    function deleteFile(fileName, rowId) {
+        if (!confirm('Are you sure you want to delete this file?')) {
+            return;
+        }
+        console.log(fileName);
+        $.ajax({
+            url: 'delete_file.php',
+            type: 'POST',
+            data: { file_name: fileName },
+            success: function(response) {
+                console.log(response);
+                try {
+                    let data = response;
+                    if (data.success) {
+                        $('#' + rowId).remove();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                } catch (e) {
+                    alert('Error processing response');
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Delete failed: ' + error);
+            }
+        });
+    }
+    </script>
+</body>
+</html>

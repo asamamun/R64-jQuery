@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div id="mydiv">click me</div>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          $("#mydiv").click(function(){
+              $(this).before("<h1>before</h1>");
+              $(this).after("<h2>after</h2>");
+          });
+          $("body").on("click","h1",function(){
+              $(this).before("<h1>before</h1>");
+              $(this).after("<h2>after</h2>");
+          });
+          
+        });
+    </script>
+</body>
+</html>

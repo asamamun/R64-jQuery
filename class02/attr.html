@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <style>
+        .glow{
+            color: green;
+            box-shadow: 2px 2px 5px 5px red, -2px -2px 5px 5px blue;
+            transition: all 2s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <em title="Bold and Brave">This is first paragraph.</em>
+ <p id="myid">This is second paragraph.</p> 
+ <div id="divid"></div>
+ <hr>
+ <img src="https://picsum.photos/id/248/640/480" id="imgid" alt="">
+ <div class="imgContainer">
+ <img src="https://picsum.photos/id/248/200/300" id="248" alt="">
+ <img src="https://picsum.photos/id/249/200/300" id="249" alt="">
+ <img src="https://picsum.photos/id/250/200/300" id="250" alt="">
+ <img src="https://picsum.photos/id/251/200/300" id="251" alt="">
+ <img src="https://picsum.photos/id/252/200/300" id="252" alt="">
+ </div>
+ 
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          var title = $("em").attr("title"); 
+            $("#divid").html(title);
+
+            $(".imgContainer img").hover(function(){
+                $(this).addClass("glow");
+                let src = $(this).attr("id");//get
+                // alert(src);
+                let path = "https://picsum.photos/id/"+src+"/640/480";
+                $("#imgid").fadeOut(3000, function(){
+                    $("#imgid").attr("src", path);//set
+                    $("#imgid").fadeIn(3000);
+                })
+            });
+            $(".imgContainer img").mouseleave(function(){
+                $(this).removeClass("glow");
+            });
+        });
+    </script>
+</body>
+</html>

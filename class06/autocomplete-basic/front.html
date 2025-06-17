@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="jquery-ui.min.css">
+</head>
+<body>
+    <div class="container">
+        <!--  -->
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl mt-10 border border-gray-200">
+  <div class="p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-2">🔍 Autocomplete with jQuery & PHP</h2>
+    <p class="text-gray-600 mb-3">
+      Learn how to integrate <strong>jQuery UI Autocomplete</strong> with a <strong>PHP backend</strong> to build a dynamic search box that fetches suggestions from a server.
+    </p>
+
+    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
+      <li>✅ Uses <code>jQuery UI</code> for autocomplete UI</li>
+      <li>✅ Backend written in <code>PHP</code></li>
+      <li>✅ Fetches data from a <code>MySQL database</code></li>
+      <li>✅ Secure with <code>prepared statements</code></li>
+    </ul>
+
+    <div class="bg-gray-100 p-3 rounded-lg text-sm font-mono text-gray-800">
+      $("#search").autocomplete({<br>
+      &nbsp;&nbsp;source: "search.php",<br>
+      &nbsp;&nbsp;select: function(event, ui) { /* your logic */ }<br>
+      });
+    </div>
+
+    <p class="text-xs text-gray-500 mt-3">✨ Tip: Return a JSON object from PHP with <code>label</code> and <code>value</code> for best control.</p>
+  </div>
+</div>
+
+        <!--  -->
+        
+        <div class="d-flex justify-content-center">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/0KhwygVFbCg?si=a-mx7yjcNE_AQIrB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <p>Searchin for a film title or description in jquery autocomplete via AJAX, pages other activities has no effect on this</p>
+        <label for="search">Search Film</label>
+        <input type="search" id="search">
+
+        <hr>
+        <div id="info">
+
+        </div>
+    </div>
+
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          $("#search").autocomplete({
+            source: "back.php",
+            select: function(event, ui){
+              //ajax calls to back-details.php
+              $.ajax({
+                url: "back-details.php",
+                type: "get",
+                data: {id: ui.item.id},
+                dataType: "json",
+                success: function(response){
+                  console.log(response.data);
+                  $("#info").html(`
+                  <h3>${response.data.title}</h3>
+                  <p>Description: ${response.data.description}</p>
+                  <p>Release Year: ${response.data.release_year}</p>
+                  <p>Rating: ${response.data.rating}</p>
+                  <p>Length: ${response.data.length}</p>
+                  <p>Rental Rate: ${response.data.rental_rate}</p>
+                  <p>Replacement Cost: ${response.data.replacement_cost}</p>
+                  <p>Special Features: ${response.data.special_features}</p>
+                  `);
+                  
+                }
+              });
+            }
+          });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Autocomplete with PHP</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">🔍 PHP Autocomplete Demo</h2>
+    <p class="text-sm text-gray-600 mb-6">
+      Start typing a name to see real-time suggestions powered by PHP and jQuery UI.
+    </p>
+
+    <div class="mb-4">
+      <label for="search" class="block text-gray-700 font-medium mb-1">Search Name:</label>
+      <input type="text" id="search" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" placeholder="e.g., Alice">
+    </div>
+
+    <input type="hidden" id="selected_id">
+
+    <div id="result" class="mt-4 text-sm text-green-700 font-medium hidden"></div>
+  </div>
+
+  <script>
+    $(function() {
+      $("#search").autocomplete({
+        source: "search.php",
+        select: function(event, ui) {
+        //   $("#selected_id").val(ui.item.id);
+          $("#selected_id").val(ui.item.label);
+          $("#result").removeClass('hidden').text(`You selected: ${ui.item.label} (ID: ${ui.item.value}) Email: ${ui.item.email} Phone: ${ui.item.phone}`);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

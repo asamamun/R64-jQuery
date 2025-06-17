@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #dropZone {
+            width: 400px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 20px auto;
+            transition: border-color 0.3s;
+        }
+        #dropZone.dragover {
+            border-color: #007bff;
+            background-color: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+    <div id="dropZone">Drop file here</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+$('#dropZone').on('drop', e => {
+    e.preventDefault();
+    let file = e.originalEvent.dataTransfer.files[0];
+    let fd = new FormData(); 
+    fd.append('file', file);
+    $.ajax({
+        url: 'upload.php', 
+        method: 'POST', 
+        data: fd, 
+        contentType: false, 
+        processData: false,
+        success: data => console.log(data)
+    });
+});
+$('#dropZone').on('dragover', e => e.preventDefault());
+</script>
+
+</body>
+</html>

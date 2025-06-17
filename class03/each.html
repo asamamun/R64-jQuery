@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>$.each method: </h1>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          let color = ["red", "green", "blue", "yellow", "orange"];
+          $.each(color, function(index, value){
+            $(".container").append("<div class='box' style='width: 100px; height: 100px; background-color: " + value + "; display: inline-block'></div>");
+          });
+        });
+    </script>
+</body>
+</html>

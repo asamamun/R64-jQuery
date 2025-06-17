@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>after filling 11 digit in phone number go to next form field and after filling 6 digit in post code go to submit</h1>
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" class="form-control" id="phone" placeholder="01XX-XXXXXXX">
+            </div>
+            <div class="form-group">
+                <label for="postcode">Post Code</label>
+                <input type="text" class="form-control" id="postcode" placeholder="XXXXXX">
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        //   if phone number is 11 digits then go to next form field
+            $("#phone").on("input", function(){
+                if($(this).val().length == 11){
+                    $("#postcode").focus();
+                }
+            });
+            $("#postcode").on("input", function(){
+                if($(this).val().length == 6){
+                    $("#submit").focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

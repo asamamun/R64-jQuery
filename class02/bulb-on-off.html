@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <img id="bulb" src="pic_bulboff.gif" alt="">
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+/*           $("#bulb").click(function(){
+            if( $(this).attr("src") == "pic_bulboff.gif" ){
+                $(this).attr("src", "pic_bulbon.gif");
+            }else{
+                $(this).attr("src", "pic_bulboff.gif");
+            }
+          }); */
+          function setonoff(){
+            if( $("#bulb").attr("src") == "pic_bulboff.gif" ){
+                $("#bulb").attr("src", "pic_bulbon.gif");
+            }else{
+                $("#bulb").attr("src", "pic_bulboff.gif");
+            }
+          }
+
+          setInterval(setonoff, 1000);
+        });
+    </script>
+</body>
+</html>

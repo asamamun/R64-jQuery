@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alt Key Toggle Explanation</title>
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <script src="../assets/js/jquery-3.7.1.min.js"></script>
+  <style>
+    .toggle-target {
+      padding: 10px;
+      margin: 10px;
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+<h1>page 52</h1>
+<!-- Only these divs will toggle -->
+<div class="toggle-target">You can toggle this div using Alt+S</div>
+<div class="toggle-target">You can toggle this div using Alt+G</div>
+
+<p class="mt-3">Press <strong>Alt+S</strong> to toggle the first div, <strong>Alt+G</strong> for the second, and <strong>Alt+B</strong> for both.</p>
+
+<!-- Explanation card, not affected by toggle -->
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      🔍 How the Keyboard Shortcut Code Works
+    </div>
+    <div class="card-body">
+      <ul>
+        <li><code>altPressed</code> tracks when the <kbd>Alt</kbd> key is held.</li>
+        <li>On <code>keydown</code>:
+          <ul>
+            <li><strong>Alt + S</strong> → toggles <code>first</code> div</li>
+            <li><strong>Alt + G</strong> → toggles <code>last</code> div</li>
+            <li><strong>Alt + B</strong> → toggles <code>all .toggle-target</code> divs</li>
+          </ul>
+        </li>
+        <li><code>keyup</code> resets the <kbd>Alt</kbd> flag.</li>
+        <li><code>slideToggle()</code> animates visibility.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+$(document).ready(function() {
+    let altPressed = false;
+
+    $(document).keydown(function(event) {
+        if (event.which === 18) altPressed = true;
+
+        if (altPressed) {
+            switch (event.which) {
+                case 83: // S
+                    $('.toggle-target:first').slideToggle('slow');
+                    return false;
+                case 71: // G
+                    $('.toggle-target:last').slideToggle('slow');
+                    return false;
+                case 66: // B
+                    $('.toggle-target').slideToggle('slow');
+                    return false;
+            }
+        }
+    });
+
+    $(document).keyup(function(event) {
+        if (event.which === 18) altPressed = false;
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>$.on method: </h1>
+<input type="text" id="item"> <button id="addBtn">add</button>
+        <ul>
+            <li>item 1 <button class="delBtn">delete</button></li>
+            <li>item 2 <button class="delBtn">delete</button></li>
+            <li>item 3 <button class="delBtn">delete</button></li>
+            <li>item 4 <button class="delBtn">delete</button></li>
+            <li>item 5 <button class="delBtn">delete</button></li>
+            <li>item 6 <button class="delBtn">delete</button></li>
+        </ul>
+    </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+/*           $(".delBtn").click(function(){
+            //   $(this).parent().remove();
+            //   $(this).parent().parent().parent().remove();
+            $(this).closest("li").remove();
+          }); */
+            //ul is present in DOM when page is loaded, so we can use ul in on method to bind event with .delBtn
+          $("ul").on("click", ".delBtn", function(){
+            $(this).parent().remove();
+          });
+
+          $("#addBtn").click(function(){
+            $("ul").append("<li>" + $("#item").val() + "<button class='delBtn'>delete</button></li>");
+            $("#item").val("");
+          })
+        });
+    </script>
+</body>
+</html>
